@@ -8,6 +8,10 @@
 (load (expand-file-name "local.el" user-emacs-directory)
       t t)
 
+;; Keep settings written by Customize separate from this file.
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file t t)
+
 ;; Register Git repositories when project.el loads.
 (with-eval-after-load 'project
   (when (and my/repository-root
@@ -19,7 +23,6 @@
 
 ;; for elisp
 (add-hook 'emacs-lisp-mode-hook #'flymake-mode)
-(add-hook 'emacs-lisp-mode-hook #'display-line-numbers-mode)
 
 (add-hook 'emacs-lisp-mode-hook
 	  (lambda ()
@@ -39,21 +42,8 @@
   (setq auto-save-file-name-transforms
 	`((".*" ,dir t))))
 
-;;
+;; Store backup files separately.
 (let ((dir (expand-file-name "backups/" user-emacs-directory)))
   (make-directory dir t)
   (setq backup-directory-alist
 	        `(("." . ,dir))))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(go-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

@@ -1,0 +1,12 @@
+/local.el
+/custom.el
+/elpa/
+/eln-cache/
+/auto-save/
+/backups/
+/transient/
+/project-list.el
+/places
+/recentf
+/projects.eld
+*.elc

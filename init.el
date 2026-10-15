@@ -1,0 +1,70 @@
+;;; init.el -*- lexical-binding: t; -*-
+(fido-vertical-mode 1)
+
+;; environment
+(defvar my/repository-root nil
+  "Root directory containing local repositories.")
+
+(load (expand-file-name "local.el" user-emacs-directory)
+      t t)
+
+;; search repositories
+;; (with-eval-after-load 'project
+;;   (when (and my/repository-root
+;; 	     (file-directory-p my/repository-root))
+;;     (dolist (dir (directory-files my/repository-root t "^[^.]"))
+;;       (when (file-exists-p (expand-file-name ".git" dir))
+;; 	(project-remember-project
+;; 	          (cons 'vc (file-name-as-directory dir)))))))
+
+(defun my/register-repositories ()
+  "Register Git repositories under the configured root."
+  (when (and my/repository-root
+             (file-directory-p my/repository-root))
+    (dolist (dir (directory-files my/repository-root t "^[^.]"))
+      (when (file-exists-p (expand-file-name ".git" dir))
+        (when-let ((project (project-current nil dir)))
+          (project-remember-project project))))))
+
+(add-hook 'emacs-startup-hook #'my/register-repositories)
+
+;; for elisp
+(add-hook 'emacs-lisp-mode-hook #'flymake-mode)
+(add-hook 'emacs-lisp-mode-hook #'display-line-numbers-mode)
+
+(add-hook 'emacs-lisp-mode-hook
+	  (lambda ()
+	    (setq-local flymake-diagnostic-functions
+			(remove 'elisp-flymake-checkdoc
+				flymake-diagnostic-functions))))
+
+;; for golang
+(add-hook 'go-mode-hook #'eglot-ensure)
+
+;; show line numbers
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
+;; ~/.emacs.d/auto-save/
+(let ((dir (expand-file-name "auto-save/" user-emacs-directory)))
+  (make-directory dir t)
+  (setq auto-save-file-name-transforms
+	`((".*" ,dir t))))
+
+;;
+(let ((dir (expand-file-name "backups/" user-emacs-directory)))
+  (make-directory dir t)
+  (setq backup-directory-alist
+	        `(("." . ,dir))))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(go-mode)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

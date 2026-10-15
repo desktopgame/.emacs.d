@@ -1,6 +1,9 @@
 ;;; init.el -*- lexical-binding: t; -*-
 (fido-vertical-mode 1)
 
+;; theme
+(load-theme 'manoj-dark t)
+
 ;; environment
 (defvar my/repository-root nil
   "Root directory containing local repositories.")

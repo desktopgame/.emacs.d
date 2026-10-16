@@ -9,4 +9,6 @@
 /places
 /recentf
 /projects.eld
+/server/
+/tramp
 *.elc

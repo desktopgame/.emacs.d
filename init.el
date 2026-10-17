@@ -40,6 +40,9 @@
         (project-remember-project
          (list 'vc 'Git (file-name-as-directory dir)))))))
 
+;; key
+(which-key-mode 1)
+
 ;; git client
 
 (use-package magit

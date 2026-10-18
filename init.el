@@ -61,6 +61,15 @@
 ;; for golang
 (add-hook 'go-mode-hook #'eglot-ensure)
 
+;; choicel
+(add-to-list 'load-path
+             "C:/Users/dansaka/Work/Repository/choicel")
+(with-eval-after-load 'elisp-mode
+  (add-to-list 'elisp-flymake-byte-compile-load-path
+               "C:/Users/dansaka/Work/Repository/choicel"))
+(require 'choicel)
+(global-set-key (kbd "C-c ?") #'choicel)
+
 ;; show line numbers
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 

@@ -11,6 +11,10 @@
 (load-theme 'manoj-dark t)
 
 (set-face-attribute 'default nil :height 140)
+(set-face-attribute 'icomplete-selected-match nil
+                    :foreground "#ffffff"
+                    :background "#365f9c"
+                    :weight 'bold)
 
 ;; environment
 (defvar my/repository-root nil

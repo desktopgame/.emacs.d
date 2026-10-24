@@ -2,9 +2,10 @@
 (fido-vertical-mode 1)
 
 ;; gui
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(when (display-graphic-p)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1))
 
 ;; theme
 (load-theme 'manoj-dark t)
@@ -62,11 +63,11 @@
 (add-hook 'go-mode-hook #'eglot-ensure)
 
 ;; choicel
-(add-to-list 'load-path
-             "C:/Users/dansaka/Work/Repository/choicel")
-(with-eval-after-load 'elisp-mode
-  (add-to-list 'elisp-flymake-byte-compile-load-path
-               "C:/Users/dansaka/Work/Repository/choicel"))
+(let ((dir (expand-file-name "choicel" my/repository-root)))
+  (add-to-list 'load-path dir)
+  (with-eval-after-load 'elisp-mode
+    (add-to-list 'elisp-flymake-byte-compile-load-path dir)))
+
 (require 'choicel)
 (global-set-key (kbd "C-c ?") #'choicel)
 
@@ -84,3 +85,16 @@
   (make-directory dir t)
   (setq backup-directory-alist
 	        `(("." . ,dir))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-vc-selected-packages
+   '((ghostel :url "https://github.com/dakra/ghostel" :lisp-dir "lisp"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

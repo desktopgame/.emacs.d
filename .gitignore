@@ -12,4 +12,5 @@
 /server/
 /tramp
 /url/cache/
+/projects
 *.elc

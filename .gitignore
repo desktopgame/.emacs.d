@@ -13,4 +13,6 @@
 /tramp
 /url/cache/
 /projects
+/auto-save/
+/auto-save-list/
 *.elc

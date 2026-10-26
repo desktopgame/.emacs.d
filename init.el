@@ -1,5 +1,7 @@
 ;;; init.el -*- lexical-binding: t; -*-
 (fido-vertical-mode 1)
+(require 'corfu-terminal)
+(corfu-terminal-mode 1)
 
 ;; gui
 (when (display-graphic-p)
@@ -70,6 +72,15 @@
 (use-package rust-mode
   :ensure t
   :hook (rust-mode . eglot-ensure))
+
+(use-package corfu
+  :ensure t
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0.2)
+  (corfu-auto-prefix 2)
+  :config
+  (global-corfu-mode 1))
 
 ;; clipboard
 (when (and (eq system-type 'gnu/linux)

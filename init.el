@@ -1,7 +1,12 @@
 ;;; init.el -*- lexical-binding: t; -*-
 (fido-vertical-mode 1)
-(require 'corfu-terminal)
-(corfu-terminal-mode 1)
+(require 'corfu)
+(setq corfu-auto t)
+(global-corfu-mode 1)
+
+;; flymake
+(with-eval-after-load 'elisp-mode
+  (setq elisp-flymake-byte-compile-load-path load-path))
 
 ;; gui
 (when (display-graphic-p)

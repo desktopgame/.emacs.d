@@ -111,6 +111,7 @@
     (corfu-terminal-mode 1)))
 
 ;; for python
+;; Python LSP (BasedPyright)
 (use-package eglot
   :ensure nil
   :config
@@ -124,19 +125,29 @@
   ((python-mode . eglot-ensure)
    (python-ts-mode . eglot-ensure)))
 
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '(python-base-mode . ("ruff" "server"))))
-(add-hook 'python-base-mode-hook
-          (lambda ()
-            (eglot-ensure)
-            (add-hook 'after-save-hook 'eglot-format nil t)))
+;; Ruff lint (Flymake)
+(use-package flymake-ruff
+  :ensure t
+  :hook
+  ((python-mode . flymake-ruff-load)
+   (python-ts-mode . flymake-ruff-load)))
 
-(require 'flymake-ruff)
-(add-hook 'python-mode-hook #'flymake-ruff-load)
-
-(require 'ruff-format)
-(add-hook 'python-mode-hook 'ruff-format-on-save-mode)
+;; Ruff format
+;; (use-package ruff-format
+;;   :ensure t
+;;   :hook
+;;   ((python-mode . ruff-format-on-save-mode)
+;;    (python-ts-mode . ruff-format-on-save-mode)))
+(use-package apheleia
+  :ensure t
+  :config
+  (setf (alist-get 'python-mode apheleia-mode-alist)
+        '(ruff-isort ruff))
+  (setf (alist-get 'python-ts-mode apheleia-mode-alist)
+        '(ruff-isort ruff))
+  :hook
+  ((python-mode . apheleia-mode)
+   (python-ts-mode . apheleia-mode)))
 
 ;; clipboard
 (when (and (eq system-type 'gnu/linux)

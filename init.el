@@ -29,8 +29,8 @@
 
 (use-package ghostel
   :vc (:url "https://github.com/dakra/ghostel"
-       :lisp-dir "lisp"
-       :rev :newest))
+	    :lisp-dir "lisp"
+	    :rev :newest))
 
 (prefer-coding-system 'utf-8)
 
@@ -57,6 +57,19 @@
 (use-package magit
   :ensure t
   :bind ("C-x g" . magit-status))
+
+;; git diff
+(require 'diff-hl)
+
+;; display git diff in gutter
+(global-diff-hl-mode 1)
+(unless (display-graphic-p)
+  (diff-hl-margin-mode 1))
+
+;; integrate with magit
+(with-eval-after-load 'magit
+  (add-hook 'magit-post-refresh-hook
+            #'diff-hl-magit-post-refresh))
 
 ;; for elisp
 (add-hook 'emacs-lisp-mode-hook #'flymake-mode)
@@ -125,7 +138,7 @@
 (let ((dir (expand-file-name "backups/" user-emacs-directory)))
   (make-directory dir t)
   (setq backup-directory-alist
-	        `(("." . ,dir))))
+	`(("." . ,dir))))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

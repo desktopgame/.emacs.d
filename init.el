@@ -1,8 +1,5 @@
 ;;; init.el -*- lexical-binding: t; -*-
 (fido-vertical-mode 1)
-(require 'corfu)
-(setq corfu-auto t)
-(global-corfu-mode 1)
 
 ;; flymake
 (with-eval-after-load 'elisp-mode
@@ -86,7 +83,13 @@
   (corfu-auto-delay 0.2)
   (corfu-auto-prefix 2)
   :config
-  (global-corfu-mode 1))
+  (global-corfu-mode 1)
+
+  ;; needs below code for popup
+  (use-package corfu-terminal
+    :ensure t
+    :config
+    (corfu-terminal-mode 1)))
 
 ;; clipboard
 (when (and (eq system-type 'gnu/linux)

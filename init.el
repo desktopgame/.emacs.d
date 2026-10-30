@@ -1,6 +1,12 @@
 ;;; init.el -*- lexical-binding: t; -*-
 (fido-vertical-mode 1)
 
+;; package
+(require 'package)
+
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+
 ;; flymake
 (with-eval-after-load 'elisp-mode
   (setq elisp-flymake-byte-compile-load-path load-path))
@@ -103,6 +109,34 @@
     :ensure t
     :config
     (corfu-terminal-mode 1)))
+
+;; for python
+(use-package eglot
+  :ensure nil
+  :config
+  (add-to-list 'eglot-server-programs
+               '((python-mode python-ts-mode)
+                 "basedpyright-langserver" "--stdio")))
+
+(use-package python
+  :ensure nil
+  :hook
+  ((python-mode . eglot-ensure)
+   (python-ts-mode . eglot-ensure)))
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(python-base-mode . ("ruff" "server"))))
+(add-hook 'python-base-mode-hook
+          (lambda ()
+            (eglot-ensure)
+            (add-hook 'after-save-hook 'eglot-format nil t)))
+
+(require 'flymake-ruff)
+(add-hook 'python-mode-hook #'flymake-ruff-load)
+
+(require 'ruff-format)
+(add-hook 'python-mode-hook 'ruff-format-on-save-mode)
 
 ;; clipboard
 (when (and (eq system-type 'gnu/linux)

@@ -150,6 +150,44 @@
   ((python-mode . apheleia-mode)
    (python-ts-mode . apheleia-mode)))
 
+;; for org
+(defun my/playground ()
+  "Open a temporary Org Babel playground."
+  (interactive)
+  (let ((buffer (get-buffer-create "*playground*")))
+    (switch-to-buffer buffer)
+    (unless (derived-mode-p 'org-mode)
+      (org-mode))
+    (when (= (buffer-size) 0)
+      (insert "#+begin_src python :results output drawer\n"
+              "\n"
+              "#+end_src\n")
+      (forward-line -2))))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (shell . t)))
+
+(add-hook 'org-mode-hook #'display-line-numbers-mode)
+(setq org-babel-python-command "python3")
+
+;; for kitty
+
+(use-package kitty-graphics
+  :vc (:url "https://github.com/cashmeredev/kitty-graphics.el"
+       :rev :newest)
+  :config
+  (kitty-graphics-setup))
+
+(setq org-format-latex-options
+      (plist-put org-format-latex-options :scale 1.0))
+
+(with-eval-after-load 'org
+  (keymap-set org-mode-map "C-c p" #'org-latex-preview))
+
+(defalias 'my/refresh #'kitty-graphics-clear-all)
+
 ;; clipboard
 (when (and (eq system-type 'gnu/linux)
            (not (display-graphic-p))

@@ -65,10 +65,11 @@
   :bind ("C-x g" . magit-status))
 
 ;; git diff
-(require 'diff-hl)
+(use-package diff-hl
+  :ensure t
+  :config
+  (global-diff-hl-mode 1))
 
-;; display git diff in gutter
-(global-diff-hl-mode 1)
 (unless (display-graphic-p)
   (diff-hl-margin-mode 1))
 

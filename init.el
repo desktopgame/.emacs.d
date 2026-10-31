@@ -163,13 +163,11 @@
               (process-send-eof proc))))))
 
 ;; choicel
-(let ((dir (expand-file-name "choicel" my/repository-root)))
-  (add-to-list 'load-path dir)
-  (with-eval-after-load 'elisp-mode
-    (add-to-list 'elisp-flymake-byte-compile-load-path dir)))
-
-(require 'choicel)
-(global-set-key (kbd "C-c ?") #'choicel)
+(use-package choicel
+  :ensure nil
+  :load-path (lambda ()
+               (expand-file-name "choicel" my/repository-root))
+  :bind ("C-c ?" . choicel))
 
 ;; show line numbers
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)

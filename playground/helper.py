@@ -6,7 +6,20 @@ def dot(v1: list[int | float], v2: list[int | float]) -> int | float:
     return sum
 
 
-def dispmat(matrix):
+def dispvec(vec: list[int | float]) -> str:
+    # \begin{pmatrix} -0.025 \\ -0.025 \\ 0.075 \\ -0.025 \end{pmatrix}
+    s = "$\\begin{pmatrix}"
+    for i in range(0, len(vec)):
+        v: float = vec[i]
+        s += str(v)
+
+        if i < len(vec) - 1:
+            s += " \\\\ "
+    s += "\\end{pmatrix}$"
+    return s
+
+
+def dispmat(matrix) -> str:
     rows: int = len(matrix)
     cols: int = len(matrix[0])
     s = "$\\begin{matrix}"

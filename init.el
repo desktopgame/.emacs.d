@@ -169,6 +169,12 @@
                (expand-file-name "choicel" my/repository-root))
   :bind ("C-c ?" . choicel))
 
+;; agent-shell
+(use-package agent-shell
+      :ensure t
+      :config
+         (add-to-list 'exec-path "~/.opencode/bin/"))
+
 ;; show line numbers
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 

@@ -15,4 +15,5 @@
 /projects
 /auto-save/
 /auto-save-list/
+/agent/history
 *.elc

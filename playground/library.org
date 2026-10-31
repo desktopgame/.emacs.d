@@ -1,0 +1,6 @@
+#+name: latex-matrix
+#+begin_src python :var data='((1 2) (3 4)) :results output drawer
+from helper import dispmat
+
+print(f"{dispmat(data)}")
+#+end_src

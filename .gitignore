@@ -16,4 +16,5 @@
 /auto-save/
 /auto-save-list/
 /agent/history
+__pycache__
 *.elc

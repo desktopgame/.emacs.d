@@ -172,6 +172,12 @@
 (add-hook 'org-mode-hook #'display-line-numbers-mode)
 (setq org-babel-python-command "python3")
 
+(setenv "PYTHONPATH"
+        (expand-file-name "~/.emacs.d/playground"))
+
+(org-babel-lob-ingest
+ (expand-file-name "~/.emacs.d/playground/library.org"))
+
 ;; for kitty
 
 (use-package kitty-graphics

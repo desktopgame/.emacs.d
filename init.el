@@ -175,6 +175,9 @@
       :config
          (add-to-list 'exec-path "~/.opencode/bin/"))
 
+(setq agent-shell-openai-authentication
+      (agent-shell-openai-make-authentication :login t))
+
 ;; show line numbers
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 

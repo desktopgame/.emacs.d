@@ -6,6 +6,13 @@ def dot(v1: list[int | float], v2: list[int | float]) -> int | float:
     return sum
 
 
+def matvec(matrix, vec: list[int | float]) -> list[int | float]:
+    v: list[int | float] = []
+    for i in range(0, len(matrix)):
+        v.append(dot(matrix[i], vec))
+    return v
+
+
 def dispvec(vec: list[int | float]) -> str:
     # \begin{pmatrix} -0.025 \\ -0.025 \\ 0.075 \\ -0.025 \end{pmatrix}
     s = "$\\begin{pmatrix}"

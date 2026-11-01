@@ -175,8 +175,78 @@
 (setenv "PYTHONPATH"
         (expand-file-name "~/.emacs.d/playground"))
 
+;; org python
+(setq org-src-preserve-indentation t)
+(setq python-indent-offset 4)
+(setq org-src-tab-acts-natively t)
+
 (org-babel-lob-ingest
  (expand-file-name "~/.emacs.d/playground/library.org"))
+
+
+(defun my/org-format-block ()
+  "Format the current Org source block using its :format header."
+  (interactive)
+  (require 'org)
+  (require 'ob-core)
+
+  (let* ((element (org-element-context))
+         (info (org-babel-get-src-block-info 'light))
+         (lang (car info))
+         (formatter (alist-get :format (nth 2 info)))
+         (directory default-directory))
+
+    (unless (eq (org-element-type element) 'src-block)
+      (user-error "Not inside a source block"))
+
+    (unless (and (equal lang "python")
+                 (equal formatter "ruff"))
+      (user-error "Unsupported formatter"))
+
+    (unless (executable-find "ruff")
+      (user-error "Ruff not found"))
+
+    (save-excursion
+      (let* ((start
+              (progn
+                (goto-char (org-element-property
+                            :post-affiliated element))
+                (forward-line 1)
+                (point)))
+             (end
+              (progn
+                (goto-char (org-element-property :end element))
+                (unless (re-search-backward
+                         "^[ \t]*#\\+end_src\\b" start t)
+                  (user-error "Cannot find end_src"))
+                (line-beginning-position)))
+             (code (buffer-substring-no-properties start end))
+             (normalized (org-remove-indentation code))
+             formatted)
+
+        (with-temp-buffer
+          (setq default-directory directory)
+          (insert normalized)
+
+          (let ((status
+                 (call-process-region
+                  (point-min) (point-max)
+                  "ruff" t t nil
+                  "format"
+                  "--stdin-filename" "playground.py"
+                  "-")))
+
+            (unless (equal status 0)
+              (error "Ruff failed (%s): %s"
+                     status (buffer-string)))
+
+            (setq formatted (buffer-string))))
+
+        (unless (equal code formatted)
+          (delete-region start end)
+          (goto-char start)
+          (insert formatted))))))
+
 
 ;; for kitty
 
@@ -221,6 +291,31 @@
 
 (setq agent-shell-openai-authentication
       (agent-shell-openai-make-authentication :login t))
+
+;; commands
+(defun my/copy-file-path ()
+  "Copy the current file path."
+  (interactive)
+  (if-let* ((path (buffer-file-name)))
+      (progn
+        (kill-new path)
+        (message "Copied: %s" path))
+    (user-error "This buffer is not visiting a file")))
+
+(defun my/copy-file-name ()
+  "Copy the current file name."
+  (interactive)
+  (if-let* ((path (buffer-file-name)))
+      (let ((name (file-name-nondirectory path)))
+        (kill-new name)
+        (message "Copied: %s" name))
+    (user-error "This buffer is not visiting a file")))
+
+(defun my/copy-directory ()
+  "Copy the current working directory."
+  (interactive)
+  (kill-new default-directory)
+  (message "Copied: %s" default-directory))
 
 ;; show line numbers
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)

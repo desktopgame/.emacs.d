@@ -26,6 +26,10 @@
                     :background "#365f9c"
                     :weight 'bold)
 
+;; scroll
+(setq scroll-conservatively 101
+      scroll-margin 3)
+
 ;; environment
 (defvar my/repository-root nil
   "Root directory containing local repositories.")

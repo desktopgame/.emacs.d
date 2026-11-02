@@ -8,6 +8,13 @@
 
 ;;; Code:
 
+;;; my-org.el -*- lexical-binding: t; -*-
+
+(declare-function org-element-context "org-element")
+(declare-function org-element-type "org-element")
+(declare-function org-babel-get-src-block-info "ob-core")
+(declare-function org-babel-lob-ingest "ob-lob")
+
 ;; for org
 (defun my/playground ()
   "Open a temporary Org Babel playground."
@@ -22,11 +29,6 @@
               "#+end_src\n")
       (forward-line -2))))
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (shell . t)))
-
 (add-hook 'org-mode-hook #'display-line-numbers-mode)
 (setq org-babel-python-command "python3")
 
@@ -37,9 +39,6 @@
 (setq org-src-preserve-indentation t)
 (setq python-indent-offset 4)
 (setq org-src-tab-acts-natively t)
-
-(org-babel-lob-ingest
- (expand-file-name "playground/library.org" user-emacs-directory))
 
 (defun my/org-format-block ()
   "Format the current Org source block using its :format header."
@@ -104,10 +103,22 @@
           (goto-char start)
           (insert formatted))))))
 
-(setq org-format-latex-options
-      (plist-put org-format-latex-options :scale 1.0))
-
 (with-eval-after-load 'org
+  ;; Babel
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (shell . t)))
+
+  (org-babel-lob-ingest
+   (expand-file-name "playground/library.org"
+                     user-emacs-directory))
+
+  ;; LaTeX
+  (setq org-format-latex-options
+        (plist-put org-format-latex-options :scale 1.0))
+
+  ;; Key bindings
   (keymap-set org-mode-map "C-c p" #'org-latex-preview))
 
 (provide 'my-org)

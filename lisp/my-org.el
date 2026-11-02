@@ -121,5 +121,17 @@
   ;; Key bindings
   (keymap-set org-mode-map "C-c p" #'org-latex-preview))
 
+;; memo
+(setq org-capture-templates
+      '(("m" "Memo" entry
+         (file "~/.emacs.d/inbox.org")
+         "* %U\n%?")))
+
+(defun my/capture-memo ()
+  (interactive)
+  (org-capture nil "m"))
+
+(global-set-key (kbd "C-c m") #'my/capture-memo)
+
 (provide 'my-org)
 ;;; my-org.el ends here

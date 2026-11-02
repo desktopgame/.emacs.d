@@ -133,5 +133,12 @@
 
 (global-set-key (kbd "C-c m") #'my/capture-memo)
 
+;; memo (read)
+(global-set-key
+ (kbd "C-c M")
+ (lambda ()
+   (interactive)
+   (find-file "~/.emacs.d/inbox.org")))
+
 (provide 'my-org)
 ;;; my-org.el ends here

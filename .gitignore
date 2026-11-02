@@ -17,5 +17,6 @@
 /auto-save-list/
 /agent/history
 /inbox.org
+/bookmarks
 __pycache__
 *.elc

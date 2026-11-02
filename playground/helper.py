@@ -13,6 +13,26 @@ def matvec(matrix, vec: list[int | float]) -> list[int | float]:
     return v
 
 
+def muststash(s: str) -> str:
+    if s[0] != "$" or s[-1] != "$":
+        raise Exception("must stash")
+    return s
+
+
+def unstash(s: str) -> str:
+    return muststash(s)[1:-1]
+
+
+def mustnostash(s: str) -> str:
+    if s[0] == "$" or s[-1] == "$":
+        raise Exception("must no stash")
+    return s
+
+
+def stash(s: str) -> str:
+    return f"${mustnostash(s)}$"
+
+
 def dispvec(vec: list[int | float]) -> str:
     # \begin{pmatrix} -0.025 \\ -0.025 \\ 0.075 \\ -0.025 \end{pmatrix}
     s = "$\\begin{pmatrix}"

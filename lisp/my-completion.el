@@ -32,6 +32,8 @@
   ;; needs below code for popup
   (use-package corfu-terminal
     :ensure t
+    :if (and (not (display-graphic-p))
+           (< emacs-major-version 31))
     :config
     (corfu-terminal-mode 1)))
 

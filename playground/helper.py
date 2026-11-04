@@ -13,51 +13,39 @@ def matvec(matrix, vec: list[int | float]) -> list[int | float]:
     return v
 
 
-def muststash(s: str) -> str:
-    if s[0] != "$" or s[-1] != "$":
-        raise Exception("must stash")
-    return s
+def pprint(s: str):
+    print(f"${s}$")
 
 
-def unstash(s: str) -> str:
-    return muststash(s)[1:-1]
-
-
-def mustnostash(s: str) -> str:
-    if s[0] == "$" or s[-1] == "$":
-        raise Exception("must no stash")
-    return s
-
-
-def stash(s: str) -> str:
-    return f"${mustnostash(s)}$"
+def dispfloat(f: float) -> str:
+    return f"{f:.4f}"
 
 
 def dispvec(vec: list[int | float]) -> str:
     # \begin{pmatrix} -0.025 \\ -0.025 \\ 0.075 \\ -0.025 \end{pmatrix}
-    s = "$\\begin{pmatrix}"
+    s = "\\begin{pmatrix}"
     for i in range(0, len(vec)):
         v: float = vec[i]
-        s += str(v)
+        s += dispfloat(v)
 
         if i < len(vec) - 1:
             s += " \\\\ "
-    s += "\\end{pmatrix}$"
+    s += "\\end{pmatrix}"
     return s
 
 
 def dispmat(matrix) -> str:
     rows: int = len(matrix)
     cols: int = len(matrix[0])
-    s = "$\\begin{matrix}"
+    s = "\\begin{matrix}"
     for i in range(0, rows):
         for j in range(0, cols):
             w: float = matrix[i][j]
-            s += str(w)
+            s += dispfloat(w)
 
             if j == 0:
                 s += " & "
             else:
                 s += " \\\\ "
-    s += "\\end{matrix}$"
+    s += "\\end{matrix}"
     return s

@@ -121,6 +121,18 @@
   ;; Key bindings
   (keymap-set org-mode-map "C-c p" #'org-latex-preview))
 
+;; org export
+(defun my/org-export-html-and-open ()
+  "Export current Org buffer to HTML and open it in a browser."
+  (interactive)
+  (org-html-export-to-html nil nil nil nil)
+  (org-open-file
+   (org-export-output-file-name ".html")))
+
+(with-eval-after-load 'org
+  (add-to-list 'org-file-apps
+               '("\\.x?html?\\'" . browse-url)))
+
 ;; memo
 (setq org-capture-templates
       '(("m" "Memo" entry

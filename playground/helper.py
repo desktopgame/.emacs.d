@@ -14,7 +14,10 @@ def matvec(matrix, vec: list[int | float]) -> list[int | float]:
 
 
 def pprint(s: str):
-    print(f"${s}$")
+    # print(f"${s}$")
+    print(r"\[")
+    print(s)
+    print(r"\]")
 
 
 def dispfloat(f: float) -> str:
@@ -35,17 +38,33 @@ def dispvec(vec: list[int | float]) -> str:
 
 
 def dispmat(matrix) -> str:
-    rows: int = len(matrix)
-    cols: int = len(matrix[0])
-    s = "\\begin{matrix}"
-    for i in range(0, rows):
-        for j in range(0, cols):
-            w: float = matrix[i][j]
-            s += dispfloat(w)
+    rows: list[str] = []
+    for row in matrix:
+        rows.append(" & ".join(dispfloat(v) for v in row))
 
-            if j == 0:
-                s += " & "
-            else:
-                s += " \\\\ "
-    s += "\\end{matrix}"
-    return s
+    return r"\begin{matrix}" + r" \\ ".join(rows) + r"\end{matrix}"
+
+
+def dispmat(matrix, before=None) -> str:
+    rows = []
+
+    for i, row in enumerate(matrix):
+        cols = []
+
+        for j, value in enumerate(row):
+            s = dispfloat(value)
+
+            if before is not None:
+                old = before[i][j]
+
+                if dispfloat(value) != dispfloat(old):
+                    if value > old:
+                        s = rf"\color{{blue}}{{{s}}}"
+                    elif value < old:
+                        s = rf"\color{{red}}{{{s}}}"
+
+            cols.append(s)
+
+        rows.append(" & ".join(cols))
+
+    return r"\begin{matrix}" + r" \\ ".join(rows) + r"\end{matrix}"

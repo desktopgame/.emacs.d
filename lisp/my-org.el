@@ -129,6 +129,12 @@
   (org-open-file
    (org-export-output-file-name ".html")))
 
+(defun my/org-export-html ()
+  "Export current Org buffer to HTML"
+  (interactive)
+  (org-html-export-to-html nil nil nil nil))
+
+
 (with-eval-after-load 'org
   (add-to-list 'org-file-apps
                '("\\.x?html?\\'" . browse-url)))
